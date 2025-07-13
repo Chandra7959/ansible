@@ -3,20 +3,19 @@
   hosts: all
   gather_facts: no
   tasks:
-
     - name: Detect Python binary path
       shell: |
         command -v python3 || command -v python || echo "python-not-found"
       register: python_path
       changed_when: false
-
+      
     - name: Get Python version
       shell: "{{ python_path.stdout }} --version"
       register: python_version
       when: python_path.stdout != "python-not-found"
       changed_when: false
       ignore_errors: true
-
+      
     - name: Display Python path
       debug:
         msg: "Host {{ inventory_hostname }} - Python Path: {{ python_path.stdout }}"
